@@ -1,7 +1,7 @@
 # Metasnapper-vue
 
 This is an example Progressive Web Application and simple no-build Vue framework application.  
-It is a conversion to use the Vue JavaScript frontend framework of the plain HTML/JavaSCript/CSS Progressive Web App here: https://github.com/nigejohnson/Metasnapper.  
+It is a conversion to use the Vue JavaScript frontend framework of the plain HTML/JavaScript/CSS Progressive Web App here: https://github.com/nigejohnson/Metasnapper.  
 Like that project, this project is also intended to demonstrate that it is possible to build a fully functional mobile application, which is also capable of working offline when there is no internet connection, using only JavaScript, HMTL and CSS, simply by conforming to Progressive Web Application approaches and standards.
 The use case implemented is the adding of metadata to photos. Metadata is both bundled with the photos as a "metasnap" and also written into the JPEG of the photo itself, in accordance with JPEG standards, using a 3rd party JavaScript library. This use case enables the demonstration of the following application features:
 -	Integration with hardware on the device: specifically, the camera (to take the photos) and GPS (to capture geolocation metadata).
