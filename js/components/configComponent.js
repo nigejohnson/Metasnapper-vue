@@ -19,7 +19,7 @@ configComponent = {
         /*html*/
         `
         <div id="pageContent">
-        <div id="version">MetaSnapper Version 1.3.1</div>
+        <div id="version">MetaSnapper Version 2.0.0</div>
         <h1>App Configuration</h1>
         <div id="emails">
         <h2>Send Snaps to Email Address:</h2>
