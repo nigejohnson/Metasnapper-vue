@@ -27,7 +27,7 @@ indexComponent = {
   <label for="photo" class="custom-file-upload" id="photo_label">
     Add Photo
   </label>
-  <input type="file" accept="image/*" id="photo" size="100" v-on:change="previewPhoto()">
+  <input type="file" accept="image/*" capture id="photo" size="100" v-on:change="previewPhoto()">
   <div id="photo_preview">
     <img src="" id="thumbnail" height="200" alt="Image preview..." v-bind:src="thumbnail">
   </div>
