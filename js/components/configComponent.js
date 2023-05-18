@@ -8,6 +8,7 @@ configComponent = {
                 defaultTitle: "",
                 batchSize: 10,
                 mailTo: [{ email: "", index: 0 }],
+                autosave: false,
             },
             saveDisabled: false,
             message: "",
@@ -36,6 +37,8 @@ configComponent = {
       <div id="miscdefaults">
         <h2>Default Title</h2>
         <input type="text" id="defaultTitle" size="30" maxlength="100" v-model="appConfig.defaultTitle"/>
+        <h2>Autosave Snaps?</h2>
+        <input type="checkbox" id="autosave"  v-model="appConfig.autosave"/>
       </div><br/>
       <div id="diagnostics">
       <h2>Configure App Diagnostics</h2>
@@ -145,7 +148,11 @@ configComponent = {
                 {
                     name: 'batchSize',
                     value: this.appConfig.batchSize
-                }
+                },
+                {
+                    name: 'autosave',
+                    value: this.appConfig.autosave
+                },
             ];
 
             this.saveDisabled = true;
@@ -183,6 +190,10 @@ configComponent = {
                     if (configRecord.name === 'defaultTitle') {
                         // Instantly set the value "in memory", so the app can use without having to retrieve from indexeddb.
                         mainModule.setDefaultTitle(configRecord.value);
+                    }
+                    if (configRecord.name === 'autosave') {
+                        // Instantly set the value "in memory", so the app can use without having to retrieve from indexeddb.
+                        mainModule.setAutosave(configRecord.value);
                     }
                     return store.put(configRecord); // This should update using the name of the config field as a key, or add if the config field is not yet in the object store.
                 })

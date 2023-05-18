@@ -11,6 +11,7 @@ var mainModule = (function () {
 
   let appLogLevel = 1;
   let defaultTitle = 'MetaSnap: ';
+  let autosave = false;
 
   // Check for support
   if (!('indexedDB' in window)) {
@@ -75,6 +76,7 @@ var mainModule = (function () {
   re-run */
   async function reOpenApp() {
     let startingAppLogLevel = 1;
+    let startingAutosave = false;
     //let startingDefaultTitle = mainModule.getDefaultTitle();
     let appConfig;
     appConfig = await mainModule.getConfig();
@@ -84,6 +86,12 @@ var mainModule = (function () {
     // Now being set by getStartingtitle, called on the indexComponent beforeCreate lifecycle hook.
 
     mainModule.setAppLogLevel(startingAppLogLevel);
+
+    if (appConfig && appConfig.autosave) {
+      startingAutosave = appConfig.autosave;
+    }
+
+    mainModule.setAutosave(startingAutosave);
 
   }
 
@@ -227,6 +235,14 @@ var mainModule = (function () {
 
   function setDefaultTitle(newDefaultTitle) {
     defaultTitle = newDefaultTitle;
+  }
+
+  function getAutosave() {
+    return autosave;
+  }
+
+  function setAutosave(newAutosave) {
+    autosave = newAutosave;
   }
 
   /* Included for completeness and to allow direct logging of an error message, though, in practice
@@ -758,6 +774,8 @@ var mainModule = (function () {
     setAppLogLevel: (setAppLogLevel),
     getDefaultTitle: (getDefaultTitle),
     setDefaultTitle: (setDefaultTitle),
+    getAutosave: (getAutosave),
+    setAutosave: (setAutosave),
     writeExifMetadata: (writeExifMetadata)
   };
 })();

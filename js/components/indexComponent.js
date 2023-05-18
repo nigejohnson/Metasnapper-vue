@@ -201,9 +201,17 @@ indexComponent = {
       let component = this;
 
       reader.addEventListener('load', function () {
-        preview.src = reader.result;
-        component.thumbnail = preview.src; // Extra line to ensure the vue binding happens.. it doesn't otherwise, perhaps becaue this value is being set in JS
-        previewDiv.style.display = 'block';
+        //preview.src = reader.result;
+        //component.thumbnail = preview.src; // Extra line to ensure the vue binding happens.. it doesn't otherwise, perhaps becaue this value is being set in JS
+        component.thumbnail = reader.result;
+        //previewDiv.style.display = 'block';
+        if (mainModule.getAutosave()) {
+          component.processPageAndSave(); // autosave
+        }
+        else { // preview the photo to allow the user to decide to save, or not, manually
+          preview.src = component.thumbnail;
+          previewDiv.style.display = 'block';
+        }
       }, false);
 
       if (file) {
