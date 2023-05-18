@@ -10,6 +10,7 @@ showsnapsComponent = {
             deleteclick: '',
             snapStartPos: 1,
             snapEndPos: 10,
+            lastDisplayedSnap: 10,
             pageDownDisabled: false,
             pageUpDisabled: true,
 
@@ -30,7 +31,8 @@ showsnapsComponent = {
         </section>
         <button id="post" class="pageButton" v-on:click="editSnaps()">Save Edits</button><br/>
         <button id="post" class="pageButton" v-on:click="processPageAndPostSnaps()">Post Snaps</button><br/>
-        <div id="pagination">Showing snaps from snap number <span id="snapStartPos">{{snapStartPos}}</span> to snap number <span id="snapEndPos">{{snapEndPos}}</span></div>
+        <div id="pagination" v-if="snapsInfo.totalSnapCount > 0">Showing snaps from snap number <span id="snapStartPos">{{snapStartPos}}</span> to snap number <span id="snapEndPos">{{lastDisplayedSnap}}</span></div>
+        <div id="pagination" v-else>No snaps</span></div>
         <div id="notes">
         <template v-for="snap in snapsInfo.snapArray">
 
@@ -50,7 +52,7 @@ showsnapsComponent = {
         <a v-bind:href="'https://maps.google.com/maps/search/?api=1&query=' + snap.latitude +',' + snap.longitude"
             target="_blank"> Show Location </a></p>
         
-        <p>  <button id="deletesnap" class="itemButton" v-on:click="deleteSnap(snap.snapId)">Delete Snap</button> </p>
+        <p>  <button id="deletesnap" class="itemButton" v-on:click="processPageAndDeleteSnap(snap.snapId)">Delete Snap</button> </p>
         </span>
 
         </template>
@@ -90,7 +92,19 @@ showsnapsComponent = {
                 handleError(e);
             });
 
+
+
             this.snapsInfo = await mainModule.getSnaps(this.snapStartPos, this.snapEndPos);
+
+            if (this.snapStartPos > this.snapsInfo.totalSnapCount && this.snapStartPos > 1) {
+                this.pageUp(); // force an automatic page up if we've now deleted everything on the page.
+            }
+            else {
+
+                this.lastDisplayedSnap = this.snapEndPos;
+                this.resetPageButtonsStates();
+            }
+
         },
 
         async pageDown() {
@@ -98,6 +112,7 @@ showsnapsComponent = {
             this.snapStartPos = this.snapEndPos + 1;
             this.snapEndPos = this.snapEndPos + 10;
             this.snapsInfo = await mainModule.getSnaps(this.snapStartPos, this.snapEndPos);
+            this.lastDisplayedSnap = this.snapEndPos;
             this.resetPageButtonsStates();
 
         },
@@ -109,6 +124,7 @@ showsnapsComponent = {
             this.snapStartPos = this.snapStartPos - 10;
             if (this.snapStartPos < 0) this.snapStartPos = 1; // Bit of defensive coding
             this.snapsInfo = await mainModule.getSnaps(this.snapStartPos, this.snapEndPos);
+            this.lastDisplayedSnap = this.snapEndPos;
             this.resetPageButtonsStates();
 
         },
@@ -142,6 +158,20 @@ showsnapsComponent = {
             this.editSnaps(actionFunc);
         },
 
+        processPageAndDeleteSnap(id) {
+            let thisComponent = this;
+            let actionFunc = function () {
+                // As this is only a function declaration, and the function itself could be invoked in
+                // any context, the "this" within the function only refers to the most basic context: the Window!
+                // Therefore we have to save a reference to the the "this" of the component outside
+                // the function declaration and then use that reference here.
+                thisComponent.deleteSnap(id);
+
+            };
+
+            this.editSnaps(actionFunc);
+        },
+
         processPageAndAddSnaps() {
 
             let actionFunc = function () {
@@ -167,6 +197,7 @@ showsnapsComponent = {
 
             if (this.snapEndPos >= this.snapsInfo.totalSnapCount) {
                 this.pageDownDisabled = true;
+                this.lastDisplayedSnap = this.snapsInfo.totalSnapCount;
             }
             else {
                 this.pageDownDisabled = false;
