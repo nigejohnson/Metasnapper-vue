@@ -303,6 +303,7 @@ showsnapsComponent = {
                     s = 'Some snaps edits have failed. Please see the app log.';
                 }
                 mainModule.showText(s);
+                window.navigator.vibrate(300);
             }).catch(function (e) {
                 s = 'Error when attempting to save edited snaps';
                 mainModule.handleError(s + ': ' + e);

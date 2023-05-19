@@ -151,6 +151,8 @@ indexComponent = {
 
           document.getElementById('photo_preview').style.display = 'none';
           component.thumbnail = ''; //  This assignment causes Vue to automatically reset the DOM and the page, clearing the image
+          window.navigator.vibrate(300); //0.3 second vibrate to confirm save
+
         }).catch(function (e) {
           mainModule.handleError(e);
           window.alert('Unable to save snaps. The error is' + e);
