@@ -105,6 +105,14 @@ header {
   width: 30%;
 }
 
+
+/* We have to do this because the .pageButton style overrides the inbuilt user agent disabled pseuodclass style, so 
+once the color is set to black it stops the disabled button text turning gray! */
+
+.pageButton:disabled {
+  color: rgba(50, 50, 50, 0.5);
+}
+
 p {
   padding: 10px;
   text-align: center;

@@ -5,7 +5,7 @@ showsnapsComponent = {
 
             snapsInfo: {
                 snapArray: [],
-                totalSnapCount: 0
+                totalSnapCount: -1
             },
             deleteclick: '',
             snapStartPos: 1,
@@ -31,8 +31,9 @@ showsnapsComponent = {
         </section>
         <button id="post" class="pageButton" v-on:click="editSnaps()">Save Edits</button><br/>
         <button id="post" class="pageButton" v-on:click="processPageAndPostSnaps()">Post Snaps</button><br/>
-        <div id="pagination" v-if="snapsInfo.totalSnapCount > 0">Showing snaps from snap number <span id="snapStartPos">{{snapStartPos}}</span> to snap number <span id="snapEndPos">{{lastDisplayedSnap}}</span></div>
-        <div id="pagination" v-else>No snaps</span></div>
+        <div id="pagination" v-if="snapsInfo.totalSnapCount == -1">Fetching snaps...</div>
+        <div id="pagination" v-else-if="snapsInfo.totalSnapCount > 0">Showing snaps from snap number <span id="snapStartPos">{{snapStartPos}}</span> to snap number <span id="snapEndPos">{{lastDisplayedSnap}}</span></div>
+        <div id="pagination" v-else>No snaps</div>
         <div id="notes">
         <template v-for="snap in snapsInfo.snapArray">
 
