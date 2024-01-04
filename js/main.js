@@ -745,6 +745,47 @@ var mainModule = (function () {
     });
   }
 
+  async function getToponym(lat, long) {
+    let geonamesServerCall = "http://api.geonames.org/findNearbyJSON?lat=" + lat + " &lng=" + long + " &username=metasnapper";
+    const serverUnreachable = 'Cannot suggest a note as the geonames service is unreachable: are you offline?';
+    let toponymName = "";
+
+    await window.fetch(geonamesServerCall, {
+      method: 'GET'
+    }).then(function (response) {
+      if (response.url.search('offline.html') !== -1) {
+        // in this case there is no connectivity: return '' as the toponym and showText on the message and logInfo
+        logInfo(serverUnreachable);
+        showText(serverUnreachable);
+        return { connectivity: serverUnreachable };
+
+      } else {
+        // NB this is a asynchronous, promise generating call to get the response body.
+        // In theory, at this point, it should contain a geonames object containing an array of a single object
+        // that has many properties, including a toponymName.
+        return response.json();
+      }
+    }).then(function (jsonInfo) {
+      // Have to do this as response.json() returns yet another promise, to get the response body, that we have to resolve with a then
+
+      if (jsonInfo.status) { // the geonames service returns a status object if an error has occured. It contains a message and a value.
+        logError("Geonames service error: " + jsonInfo.status.message + ", with error value " + jsonInfo.status.value);
+        showText("Geonames service error: " + jsonInfo.status.message);
+      }
+
+      if (jsonInfo.geonames) {
+
+        toponymName = jsonInfo.geonames[0].toponymName;
+
+      }
+
+
+    })
+
+    return toponymName;
+
+  }
+
 
   return {
     getConfig: getConfig,
@@ -776,6 +817,7 @@ var mainModule = (function () {
     setDefaultTitle: (setDefaultTitle),
     getAutosave: (getAutosave),
     setAutosave: (setAutosave),
-    writeExifMetadata: (writeExifMetadata)
+    writeExifMetadata: (writeExifMetadata),
+    getToponym: (getToponym),
   };
 })();

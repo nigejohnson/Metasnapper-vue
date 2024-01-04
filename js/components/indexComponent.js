@@ -21,7 +21,7 @@ indexComponent = {
   </section>
   <h2>Title</h2>
   <input type="text" id="title" size="30" maxlength="100" v-model="title" /> <br/>
-  <h2>Notes</h2>{{defaultTitle}}
+  <h2>Notes <button id="suggest" class="hintButton" v-on:click="suggest()" >Suggest</button></h2>
   <textarea id="notes" rows="4" cols="30" maxlength="10000" v-model="notes"> </textarea> <br/>
   <h2>Photo</h2>
   <label for="photo" class="custom-file-upload" id="photo_label">
@@ -223,6 +223,33 @@ indexComponent = {
       if (file) {
         reader.readAsDataURL(file);
       }
+    },
+    async suggest() {
+      let toponymName = "No suggestion";
+      let component = this;
+
+      /* toponymName = await mainModule.getToponym(51.14902421174052, -3.1567726962536566);
+       alert("From indexcomponent " + toponymName); */
+
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(async function (location) {
+          let latitude = 'Unknown';
+          let longitude = 'Unknown';
+          if (location) {
+            latitude = location.coords.latitude;
+            longitude = location.coords.longitude;
+          }
+          toponymName = await mainModule.getToponym(latitude, longitude);
+          // Yields Wrantage, used only for testing toponymName = await mainModule.getToponym(51, -3);
+
+          component.notes = toponymName;
+
+        }, async function () {
+          toponymName = "No loc";
+          component.notes = toponymName;
+        }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
+      }
+
     },
   },
 }
