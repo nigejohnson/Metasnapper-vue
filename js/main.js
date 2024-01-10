@@ -746,7 +746,7 @@ var mainModule = (function () {
   }
 
   async function getToponym(lat, long) {
-    let geonamesServerCall = "http://api.geonames.org/findNearbyJSON?lat=" + lat + " &lng=" + long + " &username=metasnapper";
+    let geonamesServerCall = "https://secure.geonames.org/findNearbyJSON?lat=" + lat + " &lng=" + long + " &username=metasnapper";
     const serverUnreachable = 'Cannot suggest a note as the geonames service is unreachable: are you offline?';
     let toponymName = "";
 
