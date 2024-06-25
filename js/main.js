@@ -356,7 +356,7 @@ var mainModule = (function () {
     let fnserver;
     if (window.location.hostname.includes('b4a')) {
       //fnserver = 'https://metasnapper-server.herokuapp.com/';
-      fnserver = 'https://https://metasnapperserver1-z5q0l4in.b4a.run/';
+      fnserver = 'https://metasnapperserver1-z5q0l4in.b4a.run/';
     } else {
       fnserver = 'http://localhost:5000/';
     }
