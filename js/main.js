@@ -389,7 +389,7 @@ var mainModule = (function () {
 
     let batchErrored;
 
-    const serverUnreachable = 'Cannot submit notes as the target server appears to be unreachable.';
+    const serverUnreachable = 'Cannot submit notes as the target server ' + fnserver + ' appears to be unreachable.';
 
     dbPromise.then(async function (db) {
       appConfig = await getConfig();
