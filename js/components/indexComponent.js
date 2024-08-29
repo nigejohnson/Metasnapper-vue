@@ -33,6 +33,8 @@ indexComponent = {
   </div>
   <button id="save" class="pageButton" v-on:click="processPageAndSave()" v-bind:disabled="saveDisabled">Save Snap</button><br/>
   <button id="show" class="pageButton" v-on:click="showSnapsAfterSave()" v-bind:disabled="showDisabled">Show Snaps</button><br/>
+  <!-- <button id="post" class="pageButton" v-on:click="exportSnapsAfterSave()">Export Snaps</button><br/> -->
+  <button id="post" class="pageButton" v-on:click="testShare()">Test Share</button><br/>
   <button id="post" class="pageButton" v-on:click="postSnapsAfterSave()">Post Snaps</button><br/>
   <button id="config" class="pageButton" v-on:click="configAppAfterSave()">Configure App</button><br/>
   
@@ -187,6 +189,24 @@ indexComponent = {
       //indexComponent.methods.processPageAndSave(postSaveFunc);
       this.processPageAndSave(postSaveFunc);
     },
+
+    testShare() {
+
+      mainModule.testShare();
+      //mainModule.exportSnaps();
+
+    },
+
+    /* exportSnapsAfterSave() {
+      //mainModule.clearText();
+
+      //mainModule.disablePostButtons();
+
+      let exportAfterSave = function () {
+        mainModule.exportSnaps();
+      };
+      this.processPageAndSave(exportAfterSave);
+    }, */
 
     postSnapsAfterSave() {
       mainModule.clearText();

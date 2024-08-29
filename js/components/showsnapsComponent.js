@@ -50,6 +50,7 @@ showsnapsComponent = {
         <p> Longitude: {{snap.longitude}}</p>
        
         <p v-if="snap.latitude !== 'Unknown' && snap.longitude !== 'Unknown'">
+        <p>  <button id="exportsnap" class="itemButton" v-on:click="exportSnap(snap.snapId)">Export Snap</button> </p>
         <a v-bind:href="'https://maps.google.com/maps/search/?api=1&query=' + snap.latitude +',' + snap.longitude"
             target="_blank"> Show Location </a></p>
         
@@ -82,6 +83,25 @@ showsnapsComponent = {
 
     },
     methods: {
+
+        async exportSnap(id) {
+            for (let i = 0; i < this.snapsInfo.snapArray.length; i++) {
+                if (this.snapsInfo.snapArray[i].snapId == id) {
+                    let snapRecord = {
+                        title: this.snapsInfo.snapArray[i].title,
+                        note: this.snapsInfo.snapArray[i].note,
+                        photoasdataurl: this.snapsInfo.snapArray[i].photoasdataurl,
+                        datetime: this.snapsInfo.snapArray[i].datetime,
+                        latitude: this.snapsInfo.snapArray[i].latitude,
+                        longitude: this.snapsInfo.snapArray[i].longitude
+                    };
+                    mainModule.exportSnap(snapRecord);
+                }
+
+
+            }
+
+        },
 
         async deleteSnap(id) {
             await mainModule.dbPromise.then(function (db) {

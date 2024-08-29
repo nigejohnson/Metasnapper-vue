@@ -350,6 +350,149 @@ var mainModule = (function () {
     mountedApp.$router.replace('/config');
   }
 
+  function testShare() {
+    /* let shareData = {
+        title: 'MDN',
+        text: 'Learn web development on MDN!',
+        url: 'https://developer.mozilla.org',
+      }; */
+
+    //let shareData = new File(['This is a test'],'testfile',{type:'text/plain'});
+
+    let shareData = new File(['This is a test'], "some.jpeg", { type: "image/jpeg" });
+    let shareData2 = new File(['This is another test'], "someother.jpeg", { type: "image/jpeg" });
+
+
+    let snapsList = [];
+    snapsList.push(shareData);
+    snapsList.push(shareData2);
+
+    //snapsList.push(shareData);
+
+    /* navigator.share({
+     title: "Example File",
+     files: [file]
+   }); */
+
+    /* navigator.share({
+      title: "Example files",
+      files: snapsList
+    }); */
+
+    navigator.share({
+      title: "Example files",
+      files: [shareData]
+    });
+    //navigator.share(shareData);
+  }
+
+  async function exportSnap(snap) {
+
+    let metadata = {};
+    let snapFile;
+
+
+    var snapdatetime = snap.datetime.toJSON();
+    var rawattachname = snapdatetime + '-' + '-title-' + snap.title;
+
+
+    // Clean any invalid characters out of the filename
+
+    // The following is the full verion of the regex to exclude invalid characters
+    // from windows file names including control characters, the line feeds.
+    // But this causes semistandard to object and I don't think you can enter these characters via the
+    // app.
+    // var attachname = rawattachname.replace(/[<>:"\/\\\|?*\x00-\x1F]/g, '');
+    // Also removing any leading or trailing whitespace.
+    var attachname = rawattachname.replace(/[<>:"/\\|?*]/g, '').trim() + '.jpeg';
+
+
+    snapFile = getFileFromBase64(snap.photoasdataurl, attachname);
+
+
+    metadata = { title: snap.title, text: snap.note };
+
+
+    // Do the webshare bits here
+    if (navigator.canShare && navigator.canShare({ files: [snapFile] })) {
+      await navigator.share({
+        title: metadata.title,
+        text: metadata.note,
+        files: [snapFile],
+
+      });
+      console.log("Image shared successfully");
+    }
+    else {
+      alert('Sorry: unable to share from your particular device.');
+    }
+
+  }
+
+  /* function exportSnaps() {
+
+    let metadata = {};
+    let snapFile;
+    dbPromise.then(async function (db) {
+
+      let tx = db.transaction('snaps', 'readonly');
+      let store = tx.objectStore('snaps');
+      return store.openCursor();
+    }).then(function showSnaps(cursor) {
+      if (!cursor) { return; }
+      logDebug('Cursored at:' + cursor.value.title);
+
+      var snapdatetime = cursor.value.datetime.toJSON();
+      var rawattachname = snapdatetime + '-' + '-title-' + cursor.value.title;
+      */
+
+
+  // Clean any invalid characters out of the filename
+
+  // The following is the full verion of the regex to exclude invalid characters
+  // from windows file names including control characters, the line feeds.
+  // But this causes semistandard to object and I don't think you can enter these characters via the
+  // app.
+  // var attachname = rawattachname.replace(/[<>:"\/\\\|?*\x00-\x1F]/g, '');
+  // Also removing any leading or trailing whitespace.
+  /* var attachname = rawattachname.replace(/[<>:"/\\|?*]/g, '').trim() + '.jpeg';
+
+
+  snapFile = getFileFromBase64(cursor.value.photoasdataurl, attachname);
+
+
+  metadata = { title: cursor.value.title, text: cursor.value.note };
+
+  return cursor.continue().then(showSnaps);
+}).then(async function () {
+  // Do the webshare bits here
+  if (navigator.canShare && navigator.canShare({ files: [snapFile] })) {
+    await navigator.share({
+      title: metadata.title,
+      text: metadata.note,
+      files: [snapFile],
+
+    });
+    console.log("Image shared successfully");
+  }
+});
+} */
+
+  function getFileFromBase64(string64, fileName) {
+
+    const trimmedString = string64.replace('data:image/jpeg;base64,', '');
+    const imageContent = atob(trimmedString);
+    const buffer = new ArrayBuffer(imageContent.length);
+    const view = new Uint8Array(buffer);
+
+    for (let n = 0; n < imageContent.length; n++) {
+      view[n] = imageContent.charCodeAt(n);
+    }
+    const type = 'image/jpeg';
+    const blob = new Blob([buffer], { type });
+    return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  }
+
   function postSnaps() {
     clearText();
     mainModule.disablePostButtons();
@@ -819,5 +962,8 @@ var mainModule = (function () {
     setAutosave: (setAutosave),
     writeExifMetadata: (writeExifMetadata),
     getToponym: (getToponym),
+    //exportSnaps: (exportSnaps),
+    exportSnap: (exportSnap),
+    testShare: (testShare)
   };
 })();

@@ -3,7 +3,7 @@
 // Plus, giving the cache a new name, is a sensible way to avoid any confusion with an out of date cache.
 // Also note that, by default, the new service worker will install but remain inactive until any
 // pages using an old version of the service worker have been unloaded.
-const cacheName = 'cache-v1.2.470'; // Change this whenever the version of the app changes, or NO changes will be recached!
+const cacheName = 'cache-v1.2.522'; // Change this whenever the version of the app changes, or NO changes will be recached!
 const precacheResources = [
   '/',
   'index.html',
@@ -36,7 +36,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     /* caches.open(cacheName) Not using cache.addAll as we need to ensure we bypass the browser cache
       .then(cache => { Why bypassing the browser cache isn't the default behaviour of cache.addAll is beyond me!
-        return cache.addAll(precacheResources);
+        return cache.addAll(precacheResources)
       }) */
     /* IMPORTANT the skipWaiting here, and the clients.claim in the activate event, are both
       needed to ensure that the service worker starts to intercept fetches for/control all app resources immediately.
