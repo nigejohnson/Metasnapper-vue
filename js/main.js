@@ -77,7 +77,7 @@ var mainModule = (function () {
   async function reOpenApp() {
     let startingAppLogLevel = 1;
     let startingAutosave = false;
-    //let startingDefaultTitle = mainModule.getDefaultTitle();
+
     let appConfig;
     appConfig = await mainModule.getConfig();
     if (appConfig && appConfig.appLogLevel && (appConfig.appLogLevel >= 0 && appConfig.appLogLevel <= 3)) {
@@ -210,7 +210,7 @@ var mainModule = (function () {
     Severity is passed in because not all errors are errors! Consider wanrings for example... */
 
     /* Write to the standard JS console so that all relevant information is visible in one place when debugging,
-    and so errors still get recorded even if somehting has gone wrong with indexeddb or the way we write to it! */
+    and so errors still get recorded even if something has gone wrong with indexeddb or the way we write to it! */
     console.log('Looks like there was a problem:', errObject);
     // If severity hasn't been passed in default to ERROR
     if (!severity) {
@@ -339,7 +339,7 @@ var mainModule = (function () {
    */
   function addSnap(postfunc) {
 
-    //mountedApp.$router.push('/');
+
     mountedApp.$router.push('/');
 
     /* You'll have to restore setting the title but in a more view like way */
@@ -350,41 +350,6 @@ var mainModule = (function () {
     mountedApp.$router.replace('/config');
   }
 
-  function testShare() {
-    /* let shareData = {
-        title: 'MDN',
-        text: 'Learn web development on MDN!',
-        url: 'https://developer.mozilla.org',
-      }; */
-
-    //let shareData = new File(['This is a test'],'testfile',{type:'text/plain'});
-
-    let shareData = new File(['This is a test'], "some.jpeg", { type: "image/jpeg" });
-    let shareData2 = new File(['This is another test'], "someother.jpeg", { type: "image/jpeg" });
-
-
-    let snapsList = [];
-    snapsList.push(shareData);
-    snapsList.push(shareData2);
-
-    //snapsList.push(shareData);
-
-    /* navigator.share({
-     title: "Example File",
-     files: [file]
-   }); */
-
-    /* navigator.share({
-      title: "Example files",
-      files: snapsList
-    }); */
-
-    navigator.share({
-      title: "Example files",
-      files: [shareData]
-    });
-    //navigator.share(shareData);
-  }
 
   async function exportSnap(snap) {
 
@@ -393,6 +358,9 @@ var mainModule = (function () {
 
 
     var snapdatetime = snap.datetime.toJSON();
+    //Note the two hyphens between the date time and title: originally a bug but does serve as a useful way of
+    // distinguishing between metasnaps that were shared and those that were posted. 
+    // So leaving for now.
     var rawattachname = snapdatetime + '-' + '-title-' + snap.title;
 
 
@@ -428,55 +396,6 @@ var mainModule = (function () {
     }
 
   }
-
-  /* function exportSnaps() {
-
-    let metadata = {};
-    let snapFile;
-    dbPromise.then(async function (db) {
-
-      let tx = db.transaction('snaps', 'readonly');
-      let store = tx.objectStore('snaps');
-      return store.openCursor();
-    }).then(function showSnaps(cursor) {
-      if (!cursor) { return; }
-      logDebug('Cursored at:' + cursor.value.title);
-
-      var snapdatetime = cursor.value.datetime.toJSON();
-      var rawattachname = snapdatetime + '-' + '-title-' + cursor.value.title;
-      */
-
-
-  // Clean any invalid characters out of the filename
-
-  // The following is the full verion of the regex to exclude invalid characters
-  // from windows file names including control characters, the line feeds.
-  // But this causes semistandard to object and I don't think you can enter these characters via the
-  // app.
-  // var attachname = rawattachname.replace(/[<>:"\/\\\|?*\x00-\x1F]/g, '');
-  // Also removing any leading or trailing whitespace.
-  /* var attachname = rawattachname.replace(/[<>:"/\\|?*]/g, '').trim() + '.jpeg';
-
-
-  snapFile = getFileFromBase64(cursor.value.photoasdataurl, attachname);
-
-
-  metadata = { title: cursor.value.title, text: cursor.value.note };
-
-  return cursor.continue().then(showSnaps);
-}).then(async function () {
-  // Do the webshare bits here
-  if (navigator.canShare && navigator.canShare({ files: [snapFile] })) {
-    await navigator.share({
-      title: metadata.title,
-      text: metadata.note,
-      files: [snapFile],
-
-    });
-    console.log("Image shared successfully");
-  }
-});
-} */
 
   function getFileFromBase64(string64, fileName) {
 
@@ -962,8 +881,6 @@ var mainModule = (function () {
     setAutosave: (setAutosave),
     writeExifMetadata: (writeExifMetadata),
     getToponym: (getToponym),
-    //exportSnaps: (exportSnaps),
     exportSnap: (exportSnap),
-    testShare: (testShare)
   };
 })();

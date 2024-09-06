@@ -13,6 +13,7 @@ showsnapsComponent = {
             lastDisplayedSnap: 10,
             pageDownDisabled: false,
             pageUpDisabled: true,
+            exportSnapIndex: 0,
 
 
 
@@ -69,10 +70,22 @@ showsnapsComponent = {
         <div id="message"></div>
         </section>
         <button id="edit" class="pageButton" v-on:click="editSnaps()">Save Edits</button><br/>  
+        <button id="exportAll" class="pageButton" v-on:click="exportAllSnaps()">Export All Snaps</button><br/>
         <button id="post" class="pageButton" v-on:click="processPageAndPostSnaps()">Post Snaps</button><br/>
         <button id="pageUp" class="pageButton" v-bind:disabled="pageUpDisabled" v-on:click="processPageAndPageUp()">Page Up</button><br/>  
         <button id="pageDown" class="pageButton" v-bind:disabled="pageDownDisabled" v-on:click="processPageAndPageDown()">Page Down</button><br/> 
-        </div>   
+        </div>  
+        <dialog>
+        <!-- Dialog Content -->
+        <div id="pageContent">
+        <p> Title: {{snapsInfo.snapArray[exportSnapIndex].title}}</p>
+        <p> Note: {{snapsInfo.snapArray[exportSnapIndex].note}}</p>
+        <p> Time: {{snapsInfo.snapArray[exportSnapIndex].datetime}}</p>
+        <button id="share" class="pageButton" v-on:click="exportAllSnaps()">Share</button><br/>
+        <button id="skip" class="pageButton" v-on:click="nextShare()">Skip</button><br/>
+        <button id="close" class="pageButton" v-on:click="closeDialog()">Close</button><br/>
+        </div>
+        </dialog> 
 `,
     created: async function () {
         // This is where and how to define life-cycle hooks: they are methods! 
@@ -83,6 +96,13 @@ showsnapsComponent = {
 
     },
     methods: {
+
+        closeDialog() {
+            this.exportSnapIndex = 0;
+            const dialog = document.querySelector("dialog")
+            dialog.close() // Closes the dialog
+
+        },
 
         async exportSnap(id) {
             for (let i = 0; i < this.snapsInfo.snapArray.length; i++) {
@@ -101,6 +121,62 @@ showsnapsComponent = {
 
             }
 
+        },
+
+        exportAllSnaps() {
+            //if (this.exportSnapIndex < this.snapsInfo.snapArray.length) {
+            //const item = this.snapsInfo.snapArray[index];
+            let snapRecord = {
+                title: this.snapsInfo.snapArray[this.exportSnapIndex].title,
+                note: this.snapsInfo.snapArray[this.exportSnapIndex].note,
+                photoasdataurl: this.snapsInfo.snapArray[this.exportSnapIndex].photoasdataurl,
+                datetime: this.snapsInfo.snapArray[this.exportSnapIndex].datetime,
+                latitude: this.snapsInfo.snapArray[this.exportSnapIndex].latitude,
+                longitude: this.snapsInfo.snapArray[this.exportSnapIndex].longitude
+            };
+
+            this.shareSnap(snapRecord);
+
+        },
+
+        async shareSnap(snapRecord) {
+            try {
+                await mainModule.exportSnap(snapRecord);
+                /* navigator.share(item).then(() => {
+                    console.log(`Shared successfully: ${item.title}`);
+                }); */
+            } catch (error) {
+                console.error(`Sharing failed: ${snapRecord.title}`, error);
+            } finally {
+                //button.parentNode.removeChild(button);
+                //this.exportAllSnaps(index + 1);
+                //this.$el.querySelector('#exportAll').click(); Causes the usual can't share without a user action error and an infinite loop
+                //document.querySelector('#exportAll').click(); Causes the usual can't share without a user action error and an infinite loop
+                /* this.exportSnapIndex++;
+                 if (this.exportSnapIndex < this.snapsInfo.snapArray.length) {
+                     const dialog = document.querySelector("dialog");
+                     dialog.showModal();
+                 }
+                 else {
+                     console.log('All items shared');
+                     this.closeDialog();
+                 } */
+                this.nextShare();
+
+
+            }
+        },
+
+        nextShare() {
+            this.exportSnapIndex++;
+            if (this.exportSnapIndex < this.snapsInfo.snapArray.length) {
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            }
+            else {
+                console.log('All items shared');
+                this.closeDialog();
+            }
         },
 
         async deleteSnap(id) {
