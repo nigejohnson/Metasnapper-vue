@@ -77,7 +77,7 @@ showsnapsComponent = {
         </div>  
         <dialog>
         <!-- Dialog Content -->
-        <div id="pageContent">
+        <div id="pageContent" v-if="snapsInfo.snapArray.length > 0">
         <p> Title: {{snapsInfo.snapArray[exportSnapIndex].title}}</p>
         <p> Note: {{snapsInfo.snapArray[exportSnapIndex].note}}</p>
         <p> Time: {{snapsInfo.snapArray[exportSnapIndex].datetime}}</p>
@@ -142,25 +142,13 @@ showsnapsComponent = {
         async shareSnap(snapRecord) {
             try {
                 await mainModule.exportSnap(snapRecord);
-                /* navigator.share(item).then(() => {
-                    console.log(`Shared successfully: ${item.title}`);
-                }); */
+
             } catch (error) {
                 console.error(`Sharing failed: ${snapRecord.title}`, error);
             } finally {
-                //button.parentNode.removeChild(button);
-                //this.exportAllSnaps(index + 1);
+
                 //this.$el.querySelector('#exportAll').click(); Causes the usual can't share without a user action error and an infinite loop
-                //document.querySelector('#exportAll').click(); Causes the usual can't share without a user action error and an infinite loop
-                /* this.exportSnapIndex++;
-                 if (this.exportSnapIndex < this.snapsInfo.snapArray.length) {
-                     const dialog = document.querySelector("dialog");
-                     dialog.showModal();
-                 }
-                 else {
-                     console.log('All items shared');
-                     this.closeDialog();
-                 } */
+
                 this.nextShare();
 
 
