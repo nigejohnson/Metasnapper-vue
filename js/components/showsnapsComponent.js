@@ -70,7 +70,7 @@ showsnapsComponent = {
         <div id="message"></div>
         </section>
         <button id="edit" class="pageButton" v-on:click="editSnaps()">Save Edits</button><br/>  
-        <button id="exportAll" class="pageButton" v-on:click="exportAllSnaps()">Export All Snaps</button><br/>
+        <button id="exportAll" class="pageButton" v-on:click="exportAllSnaps()">Share Sequentially</button><br/>
         <button id="post" class="pageButton" v-on:click="processPageAndPostSnaps()">Post Snaps</button><br/>
         <button id="pageUp" class="pageButton" v-bind:disabled="pageUpDisabled" v-on:click="processPageAndPageUp()">Page Up</button><br/>  
         <button id="pageDown" class="pageButton" v-bind:disabled="pageDownDisabled" v-on:click="processPageAndPageDown()">Page Down</button><br/> 
@@ -78,6 +78,9 @@ showsnapsComponent = {
         <dialog>
         <!-- Dialog Content -->
         <div id="pageContent" v-if="snapsInfo.snapArray.length > 0">
+        <a target="_blank">
+        <img  class="thumbnail"  v-bind:src="snapsInfo.snapArray[exportSnapIndex].photoasdataurl">
+        </a>
         <p> Title: {{snapsInfo.snapArray[exportSnapIndex].title}}</p>
         <p> Note: {{snapsInfo.snapArray[exportSnapIndex].note}}</p>
         <p> Time: {{snapsInfo.snapArray[exportSnapIndex].datetime}}</p>
