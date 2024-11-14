@@ -14,12 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 html {
+  background-image: url("../images/pngtree-natural-green-leaf-pattern-3d-rendered-raster-illustration-for-background-and-picture-image_5781606NoShadow.jpg");
   background-color: #5049af;
+  
 }
 
 /* These two font size settings are necessary to stop automatic zoom in on an iPhone. 
 Basically Apple regard any font sizes less than 16px as too small. */
 body {
+  background-image: inherit;
   font-size: 17px;
 }
 
@@ -32,8 +35,13 @@ select:focus {
   font-size: 17px;
 }
 
+div[id="app"] {
+  background-image: inherit;
+}
+
 div[id="pageContent"] {
   align-items: center;
+  background-image: inherit;
   background-color: #5049af;
   display: flex;
   flex-direction: column;
@@ -93,7 +101,7 @@ header {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 17px;
   font-weight: bold;
-  height: 40px;
+  height: 55px;
   letter-spacing: 0;
   margin: 10px;
   min-width: 64px;
