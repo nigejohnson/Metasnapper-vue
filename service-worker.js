@@ -3,7 +3,7 @@
 // Plus, giving the cache a new name, is a sensible way to avoid any confusion with an out of date cache.
 // Also note that, by default, the new service worker will install but remain inactive until any
 // pages using an old version of the service worker have been unloaded.
-const cacheName = 'cache-v1.2.55'; // Change this whenever the version of the app changes, or NO changes will be recached!
+const cacheName = 'cache-v1.2.56'; // Change this whenever the version of the app changes, or NO changes will be recached!
 const precacheResources = [
   '/',
   'index.html',
@@ -25,7 +25,8 @@ const precacheResources = [
   'images/touch/icon-192x192.png',
   'images/touch/icon-256x256.png',
   'images/touch/icon-384x384.png',
-  'images/touch/icon-512x512.png'
+  'images/touch/icon-512x512.png',
+  'images/images/pngtree-natural-green-leaf-pattern-3d-rendered-raster-illustration-for-background-and-picture-image_5781606NoShadow.jpg'
 ];
 
 // NB a service worker has no access to the window scope, hence 'self'
