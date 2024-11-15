@@ -74,6 +74,7 @@ header {
 .itemButton {
   background-color: #ba92d1;
   border: none;
+  border-radius: 10%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   color: black;
   cursor: pointer;
@@ -110,13 +111,13 @@ header {
   position: relative;
   text-align: center;
   vertical-align: middle;
-  width: 30%;
+  width: 35%;
 }
 
 .hintButton {
   background-color: #ba92d1;
   border: none;
-  border-radius: 50%;
+  border-radius: 10%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   color: black;
   cursor: pointer;
@@ -124,7 +125,7 @@ header {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 12px;
   font-weight: bold;
-  height: 40px;
+  height: 25px;
   letter-spacing: 0;
   margin: 10px;
   min-width: 64px;
@@ -246,7 +247,7 @@ div[id="photo_preview"] {
   cursor: pointer;
 }
 
-label[id="photo_label"] {
+/* label[id="photo_label"] {
   border: 1px solid #ba92d1;
   background-color: #ba92d1;
   font-weight: bold;
@@ -266,8 +267,8 @@ label[id="photo_label"] {
   position: relative;
   text-align: center;
   vertical-align: middle;
-  width: 10%;
-}
+  /* width: 10%; */
+/* } */
 
 /* Center the loader */
 #loader {

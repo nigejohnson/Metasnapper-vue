@@ -24,7 +24,7 @@ indexComponent = {
   <h2>Notes <button id="suggest" class="hintButton" v-on:click="suggest()" >Suggest</button></h2>
   <textarea id="notes" rows="4" cols="30" maxlength="10000" v-model="notes"> </textarea> <br/>
   <h2>Photo</h2>
-  <label for="photo" class="custom-file-upload" id="photo_label">
+  <label for="photo" class="itemButton" id="photo_label">
     Add Photo
   </label>
   <input type="file" accept="image/*" capture id="photo" size="100" v-on:change="previewPhoto()">
