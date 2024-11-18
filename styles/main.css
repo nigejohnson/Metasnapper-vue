@@ -33,6 +33,7 @@ textarea,
 select,
 select:focus {
   font-size: 17px;
+  border: none;  
 }
 
 div[id="app"] {

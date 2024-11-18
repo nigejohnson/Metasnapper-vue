@@ -126,6 +126,17 @@ var mainModule = (function () {
       let zeroth = {};
       let exif = {};
       let gps = {};
+      /// Only ascii characters can be stored in exif
+      //First we do some special processing for the apostrophe... very common especially in place names,
+      // but on the Apple keyboard it is really a right single quotation mark, which isn't a bsic ASCII character
+      //So we replace it with a stright apostrophe which is.
+      //Add any other characters with close ascii equivalents that are also common here as the nened and opportunity arises.
+      title = title.replace(/[\u2019]/g, "'");
+      notes = notes.replace(/[\u2019]/g, "'");
+      // Then remove all other non-ascii characters
+      title = title.replace(/[^\x00-\x7F]/g, "");
+      notes = notes.replace(/[^\x00-\x7F]/g, "");
+
       // On windows the following single line results in the title appearing in the title and subject of
       // the file>properties>details
       zeroth[window.piexif.ImageIFD.ImageDescription] = title; // Core
